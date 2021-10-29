@@ -1,0 +1,54 @@
+﻿@using RG.Entity
+@model List<Person>
+@{
+    string substr1 = "<";
+    string substrP = "<p>";
+    string substrPre = "<pre>";
+    char[] charsToTrimStartP = { '<', 'p', '>' };
+    char[] charsToTrimEndP = { '<', '/', 'p', '>' };
+    char[] charsToTrimPre = { '<', 'p', 'r', 'e', '>' };
+
+    string scriptToTrim = "<script type=" + "text / javascript" + ">alert(1);</script>";
+}
+<div class="container" style="background-color:lightslategray">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+        <div class="col">
+            <img src="@item.avatar" style="width:50%" class="rounded-circle">
+
+            <h1>@item.name</h1>
+            <p> @item.title</p>
+            <p> @item.company</p>
+
+            @if (item.bio.Contains(substr1))
+            {
+                string byo;
+                @if (item.bio.Contains(substrP))
+                {
+                    byo = item.bio.TrimStart(charsToTrimStartP);
+                    byo = byo.TrimEnd(charsToTrimEndP);
+                    <p>@byo</p>
+                }
+                else if (item.bio.Contains(substrPre))
+                {
+                    byo = item.bio.TrimStart(charsToTrimPre);
+                    <p>@byo</p>
+                }
+                else
+                {
+                    byo = item.bio.Substring(0, item.bio.Length - scriptToTrim.Length);
+                    <p>@byo</p>
+                }
+            }
+            else
+            {
+                <p>@item.bio</p>
+            }
+            <br />
+        </div>
+        }
+    </div>
+</div>
+
+
